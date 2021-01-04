@@ -8,15 +8,13 @@ The Baseline Method experiments for Framework of Chinese Medical Synonyms Discov
 **Tencent Embeddinng**
 
 | DataSet |  \|   | MSKB  |  \|   |  \|   | MDKB  |  \|   |
-| :-----: | :---: | :---: | :---: | :---: | :---: | :---: | :---: |
-| Lab Id  |  ARI  |  FMI  |  NMI  |  ARI  |  FMI  |  NMI  |  ARI  |
-|    1    | 99.99 | 99.99 | 99.99 | 99.99 | 99.99 | 99.99 | 99.99 |
-|    2    |       |       |       |       |       |       |       |
-|    3    |       |       |       |       |       |       |       |
-|    4    |       |       |       |       |       |       |       |
-|    5    |       |       |       |       |       |       |       |
-
-
+| :-----: | :---: | :---: | :---: | :---: | :---: | :---: |
+| Lab Id  |  ARI  |  FMI  |  NMI  |  ARI  |  FMI  |  NMI  |
+|    1    | 99.99 | 99.99 | 99.99 | 99.99 | 99.99 | 99.99 |
+|    2    |       |       |       |       |       |       |
+|    3    |       |       |       |       |       |       |
+|    4    |       |       |       |       |       |       |
+|    5    |       |       |       |       |       |       |
 
 | DataSet |  \|   | smHitSyn |  \|   |  \|   | exHitSyn |  \|   |
 | :-----: | :---: | :------: | :---: | :---: | :------: | :---: |
@@ -26,8 +24,6 @@ The Baseline Method experiments for Framework of Chinese Medical Synonyms Discov
 |    3    |       |          |       |       |          |       |
 |    4    |       |          |       |       |          |       |
 |    5    |       |          |       |       |          |       |
-
-
 
 | value (+- std) | ARI         | FMI         | NMI         |
 | -------------- | ----------- | ----------- | ----------- |
@@ -49,8 +45,6 @@ The Baseline Method experiments for Framework of Chinese Medical Synonyms Discov
 |    4    |       |       |       |       |       |       |
 |    5    |       |       |       |       |       |       |
 
-
-
 | DataSet |  \|   | smHitSyn |  \|   |  \|   | exHitSyn |  \|   |
 | :-----: | :---: | :------: | :---: | :---: | :------: | :---: |
 | Lab Id  |  ARI  |   FMI    |  NMI  |  ARI  |   FMI    |  NMI  |
@@ -59,8 +53,6 @@ The Baseline Method experiments for Framework of Chinese Medical Synonyms Discov
 |    3    |       |          |       |       |          |       |
 |    4    |       |          |       |       |          |       |
 |    5    |       |          |       |       |          |       |
-
-
 
 | value (+- std) | ARI         | FMI         | NMI         |
 | -------------- | ----------- | ----------- | ----------- |
@@ -88,8 +80,6 @@ The Baseline Method experiments for Framework of Chinese Medical Synonyms Discov
 |    4    |       |       |       |       |       |       |
 |    5    |       |       |       |       |       |       |
 
-
-
 | DataSet |  \|   | smHitSyn |  \|   |  \|   | exHitSyn |  \|   |
 | :-----: | :---: | :------: | :---: | :---: | :------: | :---: |
 | Lab Id  |  ARI  |   FMI    |  NMI  |  ARI  |   FMI    |  NMI  |
@@ -98,8 +88,6 @@ The Baseline Method experiments for Framework of Chinese Medical Synonyms Discov
 |    3    |       |          |       |       |          |       |
 |    4    |       |          |       |       |          |       |
 |    5    |       |          |       |       |          |       |
-
-
 
 | value (+- std) | ARI         | FMI         | NMI         |
 | -------------- | ----------- | ----------- | ----------- |
@@ -120,8 +108,6 @@ The Baseline Method experiments for Framework of Chinese Medical Synonyms Discov
 |    3    |       |       |       |       |       |       |
 |    4    |       |       |       |       |       |       |
 |    5    |       |       |       |       |       |       |
-
-
 
 | DataSet |  \|   | smHitSyn |  \|   |  \|   | exHitSyn |  \|   |
 | :-----: | :---: | :------: | :---: | :---: | :------: | :---: |
@@ -158,8 +144,6 @@ The Baseline Method experiments for Framework of Chinese Medical Synonyms Discov
 |    4    |       |       |       |       |       |       |
 |    5    |       |       |       |       |       |       |
 
-
-
 | DataSet |  \|   | smHitSyn |  \|   |  \|   | exHitSyn |  \|   |
 | :-----: | :---: | :------: | :---: | :---: | :------: | :---: |
 | Lab Id  |  ARI  |   FMI    |  NMI  |  ARI  |   FMI    |  NMI  |
@@ -189,8 +173,6 @@ The Baseline Method experiments for Framework of Chinese Medical Synonyms Discov
 |    4    |       |       |       |       |       |       |
 |    5    |       |       |       |       |       |       |
 
-
-
 | DataSet |  \|   | smHitSyn |  \|   |  \|   | exHitSyn |  \|   |
 | :-----: | :---: | :------: | :---: | :---: | :------: | :---: |
 | Lab Id  |  ARI  |   FMI    |  NMI  |  ARI  |   FMI    |  NMI  |
@@ -199,8 +181,6 @@ The Baseline Method experiments for Framework of Chinese Medical Synonyms Discov
 |    3    |       |          |       |       |          |       |
 |    4    |       |          |       |       |          |       |
 |    5    |       |          |       |       |          |       |
-
-
 
 | value (+- std) | ARI         | FMI         | NMI         |
 | -------------- | ----------- | ----------- | ----------- |
@@ -228,8 +208,6 @@ The Baseline Method experiments for Framework of Chinese Medical Synonyms Discov
 |    4    |       |       |       |       |       |       |
 |    5    |       |       |       |       |       |       |
 
-
-
 | DataSet |  \|   | smHitSyn |  \|   |  \|   | exHitSyn |  \|   |
 | :-----: | :---: | :------: | :---: | :---: | :------: | :---: |
 | Lab Id  |  ARI  |   FMI    |  NMI  |  ARI  |   FMI    |  NMI  |
@@ -258,8 +236,6 @@ The Baseline Method experiments for Framework of Chinese Medical Synonyms Discov
 |    3    |       |       |       |       |       |       |
 |    4    |       |       |       |       |       |       |
 |    5    |       |       |       |       |       |       |
-
-
 
 | DataSet |  \|   | smHitSyn |  \|   |  \|   | exHitSyn |  \|   |
 | :-----: | :---: | :------: | :---: | :---: | :------: | :---: |
@@ -296,8 +272,6 @@ The Baseline Method experiments for Framework of Chinese Medical Synonyms Discov
 |    4    |       |       |       |       |       |       |
 |    5    |       |       |       |       |       |       |
 
-
-
 | DataSet |  \|   | smHitSyn |  \|   |  \|   | exHitSyn |  \|   |
 | :-----: | :---: | :------: | :---: | :---: | :------: | :---: |
 | Lab Id  |  ARI  |   FMI    |  NMI  |  ARI  |   FMI    |  NMI  |
@@ -306,8 +280,6 @@ The Baseline Method experiments for Framework of Chinese Medical Synonyms Discov
 |    3    |       |          |       |       |          |       |
 |    4    |       |          |       |       |          |       |
 |    5    |       |          |       |       |          |       |
-
-
 
 | value (+- std) | ARI         | FMI         | NMI         |
 | -------------- | ----------- | ----------- | ----------- |
@@ -332,8 +304,6 @@ The Baseline Method experiments for Framework of Chinese Medical Synonyms Discov
 |    3    |       |       |       |       |       |       |
 |    4    |       |       |       |       |       |       |
 |    5    |       |       |       |       |       |       |
-
-
 
 | DataSet |  \|   | smHitSyn |  \|   |  \|   | exHitSyn |  \|   |
 | :-----: | :---: | :------: | :---: | :---: | :------: | :---: |
@@ -370,8 +340,6 @@ The Baseline Method experiments for Framework of Chinese Medical Synonyms Discov
 |    4    |       |       |       |       |       |       |
 |    5    |       |       |       |       |       |       |
 
-
-
 | DataSet |  \|   | smHitSyn |  \|   |  \|   | exHitSyn |  \|   |
 | :-----: | :---: | :------: | :---: | :---: | :------: | :---: |
 | Lab Id  |  ARI  |   FMI    |  NMI  |  ARI  |   FMI    |  NMI  |
@@ -380,8 +348,6 @@ The Baseline Method experiments for Framework of Chinese Medical Synonyms Discov
 |    3    |       |          |       |       |          |       |
 |    4    |       |          |       |       |          |       |
 |    5    |       |          |       |       |          |       |
-
-
 
 | value (+- std) | ARI         | FMI         | NMI         |
 | -------------- | ----------- | ----------- | ----------- |
@@ -405,8 +371,6 @@ The Baseline Method experiments for Framework of Chinese Medical Synonyms Discov
 |    4    |       |       |       |       |       |       |
 |    5    |       |       |       |       |       |       |
 
-
-
 | DataSet |  \|   | smHitSyn |  \|   |  \|   | exHitSyn |  \|   |
 | :-----: | :---: | :------: | :---: | :---: | :------: | :---: |
 | Lab Id  |  ARI  |   FMI    |  NMI  |  ARI  |   FMI    |  NMI  |
@@ -416,16 +380,12 @@ The Baseline Method experiments for Framework of Chinese Medical Synonyms Discov
 |    4    |       |          |       |       |          |       |
 |    5    |       |          |       |       |          |       |
 
-
-
 | value (+- std) | ARI         | FMI         | NMI         |
 | -------------- | ----------- | ----------- | ----------- |
 | MSKB           | 45.5 (2.33) | 45.5 (2.33) | 45.5 (2.33) |
 | MDKB           |             |             |             |
 | smHitSyn       |             |             |             |
 | exHitSyn       |             |             |             |
-
-
 
 ---
 
@@ -444,8 +404,6 @@ The Baseline Method experiments for Framework of Chinese Medical Synonyms Discov
 |    4    |       |       |       |       |       |       |
 |    5    |       |       |       |       |       |       |
 
-
-
 | DataSet |  \|   | smHitSyn |  \|   |  \|   | exHitSyn |  \|   |
 | :-----: | :---: | :------: | :---: | :---: | :------: | :---: |
 | Lab Id  |  ARI  |   FMI    |  NMI  |  ARI  |   FMI    |  NMI  |
@@ -454,8 +412,6 @@ The Baseline Method experiments for Framework of Chinese Medical Synonyms Discov
 |    3    |       |          |       |       |          |       |
 |    4    |       |          |       |       |          |       |
 |    5    |       |          |       |       |          |       |
-
-
 
 | value (+- std) | ARI         | FMI         | NMI         |
 | -------------- | ----------- | ----------- | ----------- |
@@ -477,8 +433,6 @@ The Baseline Method experiments for Framework of Chinese Medical Synonyms Discov
 |    4    |       |       |       |       |       |       |
 |    5    |       |       |       |       |       |       |
 
-
-
 | DataSet |  \|   | smHitSyn |  \|   |  \|   | exHitSyn |  \|   |
 | :-----: | :---: | :------: | :---: | :---: | :------: | :---: |
 | Lab Id  |  ARI  |   FMI    |  NMI  |  ARI  |   FMI    |  NMI  |
@@ -487,8 +441,6 @@ The Baseline Method experiments for Framework of Chinese Medical Synonyms Discov
 |    3    |       |          |       |       |          |       |
 |    4    |       |          |       |       |          |       |
 |    5    |       |          |       |       |          |       |
-
-
 
 | value (+- std) | ARI         | FMI         | NMI         |
 | -------------- | ----------- | ----------- | ----------- |
