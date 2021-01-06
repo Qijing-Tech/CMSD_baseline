@@ -7,7 +7,7 @@
 """
 from pathlib import Path
 from dataloader import DataSet,DataSetDir
-from method import Kmeans,GMMs,DBScan,AC
+from method import Kmeans,GMMs,DBScan,AC,Optics
 import numpy as np
 import random
 from typing import List,Tuple,Dict
@@ -50,7 +50,7 @@ def format_output(data, bit = 1):
        return [round(d * 100, bit)  for d in data]
 
 if __name__ == '__main__':
-    set_random_seed(seed = SEED)
+
     cwd = Path.cwd()
     datadir_name = DataConfig['data_name']
     data = cwd.joinpath(DataConfig['data_dir'], datadir_name)
@@ -72,15 +72,16 @@ if __name__ == '__main__':
     # train_flat_word_list, train_word_idxes, train_cluster_idxes = get_word_idxes_and_cluster_idxes(train_sets, train_vocab, word2id)
     # train_word_embeddings = embedding[np.array(train_word_idxes)]
 
-    dev_flat_word_list, dev_word_idxes, dev_cluster_idxes = get_word_idxes_and_cluster_idxes(dev_sets, dev_vocab, word2id)
-    dev_word_embeddings = embedding[np.array(dev_word_idxes)]
-
     #TODO : need modify (run_times)
     run_times = DataConfig['run_times']
     seed_list = DataConfig['seed_list']
     ari_list, nmi_list, fmi_list = [], [], []
     for i in range(run_times):
         # TODO : model
+        set_random_seed(seed=seed_list[i])
+        dev_flat_word_list, dev_word_idxes, dev_cluster_idxes = get_word_idxes_and_cluster_idxes(dev_sets, dev_vocab,word2id)
+        dev_word_embeddings = embedding[np.array(dev_word_idxes)]
+
         if method_type == 'kmeans':
             # set cluster number by prior
             k_cluster = len(dev_cluster_idxes.keys())
@@ -95,7 +96,36 @@ if __name__ == '__main__':
             k_cluster = len(dev_cluster_idxes.keys())
             model = AC(n_cluster=k_cluster)
             pred_labels = model.predict(dev_word_embeddings)
+        elif method_type == 'optics':
+            '''
+            # GridSearchCV for DBSCAN factor : eps and min_sample
+            sub_train_sets,sub_train_vocab = split_sub_train_set_by_dev_set(train_sets, train_vocab, dev_sets)
+            sub_train_flat_word_list, sub_train_word_idxes, sub_train_cluster_idxes = get_word_idxes_and_cluster_idxes(sub_train_sets,
+                                                                                                                        sub_train_vocab,
+                                                                                                                        word2id)
+            sub_train_word_embeddings = embedding[np.array(sub_train_word_idxes)]
 
+            sub_train_labels = np.array([sub_train_cluster_idxes[ sub_train_vocab[word] ]for word in sub_train_flat_word_list])
+
+            from sklearn.cluster import OPTICS
+            from sklearn import metrics
+            model = OPTICS()
+            from sklearn.model_selection import StratifiedKFold, GridSearchCV
+            min_samples_list = list(range(1,10))
+            param_grid = dict(min_samples = min_samples_list)
+            kflod = StratifiedKFold(n_splits = 3, shuffle=True, random_state=SEED)
+            def my_custom_scoring(estimator,X,y):
+                y_pred = estimator.fit_predict(X)
+                return  metrics.adjusted_rand_score(labels_true = y, labels_pred = y_pred)
+                # return metrics.fowlkes_mallows_score(labels_true= y, labels_pred= y_pred)
+                # return metrics.normalized_mutual_info_score(labels_true= y, labels_pred= y_pred)
+
+            grid_search = GridSearchCV(model, param_grid, scoring=my_custom_scoring, n_jobs=4,cv=kflod)
+            grid_result = grid_search.fit(sub_train_word_embeddings,sub_train_labels)
+            print(f'Best ARI : {grid_result.best_score_}, using param : {grid_result.best_params_}')
+            '''
+            model = Optics(min_sample = 2)
+            pred_labels = model.predict(dev_word_embeddings)
         elif method_type == 'dbscan':
 
             '''
@@ -113,19 +143,20 @@ if __name__ == '__main__':
             model = DBSCAN()
             from sklearn.model_selection import StratifiedKFold, GridSearchCV
             from sklearn.metrics import make_scorer,adjusted_rand_score
-            eps_list = list(floatrange(6,10,10))
-            min_samples_list = list(range(1,20,10))
+            eps_list = list(floatrange(0.1,10,10))
+            min_samples_list = list(range(1,10,10))
             param_grid = dict(eps = eps_list, min_samples = min_samples_list)
             kflod = StratifiedKFold(n_splits = 3, shuffle=True, random_state=SEED)
-
-            def my_custom_scoring(estimator,X,y):
+            def my_custom_scoring(estimator, X, y):
                 y_pred = estimator.fit_predict(X)
-                return  adjusted_rand_score(labels_true = y, labels_pred = y_pred)
+                return metrics.adjusted_rand_score(labels_true=y, labels_pred=y_pred)
+                # return metrics.fowlkes_mallows_score(labels_true= y, labels_pred= y_pred)
+                # return metrics.normalized_mutual_info_score(labels_true= y, labels_pred= y_pred)
             grid_search = GridSearchCV(model, param_grid, scoring=my_custom_scoring, n_jobs=4,cv=kflod)
             grid_result = grid_search.fit(sub_train_word_embeddings,sub_train_labels)
             print(f'Best ARI : {grid_result.best_score_}, using param : {grid_result.best_params_}')
             '''
-            model = DBScan(eps=8.22, min_sample=1)
+            model = DBScan(eps=2.3, min_sample = 1)
             pred_labels = model.predict(dev_word_embeddings)
 
         target_dict = {word : dev_cluster_idxes[cluster] for word, cluster in dev_vocab.items()}
