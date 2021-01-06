@@ -6,7 +6,7 @@
 @IDE 　：　PyCharm
 """
 import numpy as np
-from sklearn.cluster import KMeans,DBSCAN
+from sklearn.cluster import KMeans,DBSCAN,AgglomerativeClustering
 from sklearn.mixture import GaussianMixture
 '''
     wrapper from sklearn
@@ -21,6 +21,15 @@ class Kmeans:
         kmeans = KMeans(n_clusters=self.n_cluster, random_state=self.seed).fit(data)
 
         return kmeans.labels_
+
+class AC:
+    def __init__(self,n_cluster):
+        self.n_cluster = n_cluster
+
+    def predict(self, data):
+        ac = AgglomerativeClustering(n_clusters= self.n_cluster).fit(data)
+
+        return ac.labels_
 
 class DBScan:
     def __init__(self, eps, min_sample):

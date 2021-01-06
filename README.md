@@ -340,21 +340,21 @@ The Baseline Method experiments for Framework of Chinese Medical Synonyms Discov
 |    4    |       |       |       |       |       |       |
 |    5    |       |       |       |       |       |       |
 
-| DataSet |  \|   | smHitSyn |  \|   |  \|   | exHitSyn |  \|   |
-| :-----: | :---: | :------: | :---: | :---: | :------: | :---: |
-| Lab Id  |  ARI  |   FMI    |  NMI  |  ARI  |   FMI    |  NMI  |
-|    1    | 99.99 |  99.99   | 99.99 | 99.99 |  99.99   | 99.99 |
-|    2    |       |          |       |       |          |       |
-|    3    |       |          |       |       |          |       |
-|    4    |       |          |       |       |          |       |
-|    5    |       |          |       |       |          |       |
+| DataSet |  \|  | smHitSyn |  \|  |  \|  | exHitSyn |  \|  |
+| :-----: | :--: | :------: | :--: | :--: | :------: | :--: |
+| Lab Id  | ARI  |   FMI    | NMI  | ARI  |   FMI    | NMI  |
+|    1    | 33.2 |   35.0   | 76.0 | 26.4 |   28.2   | 77.1 |
+|    2    |      |          |      |      |          |      |
+|    3    |      |          |      |      |          |      |
+|    4    |      |          |      |      |          |      |
+|    5    |      |          |      |      |          |      |
 
 | value (+- std) | ARI         | FMI         | NMI         |
 | -------------- | ----------- | ----------- | ----------- |
 | MSKB           | 45.5 (2.33) | 45.5 (2.33) | 45.5 (2.33) |
 | MDKB           |             |             |             |
-| smHitSyn       |             |             |             |
-| exHitSyn       |             |             |             |
+| smHitSyn       | 33.2 (0.00) | 35.0 (0.00) | 76.0        |
+| exHitSyn       | 26.4        | 28.2        | 77.1        |
 
 
 
@@ -371,21 +371,21 @@ The Baseline Method experiments for Framework of Chinese Medical Synonyms Discov
 |    4    |       |       |       |       |       |       |
 |    5    |       |       |       |       |       |       |
 
-| DataSet |  \|   | smHitSyn |  \|   |  \|   | exHitSyn |  \|   |
-| :-----: | :---: | :------: | :---: | :---: | :------: | :---: |
-| Lab Id  |  ARI  |   FMI    |  NMI  |  ARI  |   FMI    |  NMI  |
-|    1    | 99.99 |  99.99   | 99.99 | 99.99 |  99.99   | 99.99 |
-|    2    |       |          |       |       |          |       |
-|    3    |       |          |       |       |          |       |
-|    4    |       |          |       |       |          |       |
-|    5    |       |          |       |       |          |       |
+| DataSet |  \|  | smHitSyn |  \|  |  \|  | exHitSyn |  \|  |
+| :-----: | :--: | :------: | :--: | :--: | :------: | :--: |
+| Lab Id  | ARI  |   FMI    | NMI  | ARI  |   FMI    | NMI  |
+|    1    | 39.3 |   40.4   | 77.2 | 32.2 |   33.2   | 78.7 |
+|    2    |      |          |      |      |          |      |
+|    3    |      |          |      |      |          |      |
+|    4    |      |          |      |      |          |      |
+|    5    |      |          |      |      |          |      |
 
 | value (+- std) | ARI         | FMI         | NMI         |
 | -------------- | ----------- | ----------- | ----------- |
 | MSKB           | 45.5 (2.33) | 45.5 (2.33) | 45.5 (2.33) |
 | MDKB           |             |             |             |
-| smHitSyn       |             |             |             |
-| exHitSyn       |             |             |             |
+| smHitSyn       | 39.3        | 40.4        | 77.2        |
+| exHitSyn       | 32.2        | 33.2        | 78.7        |
 
 ---
 

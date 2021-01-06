@@ -7,7 +7,7 @@
 """
 from pathlib import Path
 from dataloader import DataSet,DataSetDir
-from method import Kmeans,GMMs,DBScan
+from method import Kmeans,GMMs,DBScan,AC
 import numpy as np
 import random
 from typing import List,Tuple,Dict
@@ -90,6 +90,10 @@ if __name__ == '__main__':
         elif method_type == 'gmms':
             k_component = len(dev_cluster_idxes.keys())
             model = GMMs(n_component=k_component, seed=seed_list[i])
+            pred_labels = model.predict(dev_word_embeddings)
+        elif method_type == 'ac':
+            k_cluster = len(dev_cluster_idxes.keys())
+            model = AC(n_cluster=k_cluster)
             pred_labels = model.predict(dev_word_embeddings)
 
         elif method_type == 'dbscan':

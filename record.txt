@@ -85,3 +85,47 @@ Run 5 times experiment...
 [ARI] mean : 26.3, std : 1.62
 [FMI] mean : 27.5, std : 1.4
 [NMI] mean : 75.7, std : 0.36
+
+========================================
+Use method : <ac> || deal with dataset : <sm_HIT_syn> || embedding type: <Tencent_combined.embed>
+========================================
+Run 5 times experiment...
+[ARI] : [33.2, 33.2, 33.2, 33.2, 33.2]
+[FMI] : [35.0, 35.0, 35.0, 35.0, 35.0]
+[NMI] : [76.0, 76.0, 76.0, 76.0, 76.0]
+[ARI] mean : 33.2, std : 0.0
+[FMI] mean : 35.0, std : 0.0
+[NMI] mean : 76.0, std : 0.0
+
+========================================
+Use method : <ac> || deal with dataset : <ex_HIT_syn> || embedding type: <Tencent_combined.embed>
+========================================
+Run 5 times experiment...
+[ARI] : [26.4, 26.4, 26.4, 26.4, 26.4]
+[FMI] : [28.2, 28.2, 28.2, 28.2, 28.2]
+[NMI] : [77.1, 77.1, 77.1, 77.1, 77.1]
+[ARI] mean : 26.4, std : 0.0
+[FMI] mean : 28.2, std : 0.0
+[NMI] mean : 77.1, std : 0.0
+
+========================================
+Use method : <ac> || deal with dataset : <sm_HIT_syn> || embedding type: <combined.embed>
+========================================
+Run 5 times experiment...
+[ARI] : [39.3, 39.3, 39.3, 39.3, 39.3]
+[FMI] : [40.4, 40.4, 40.4, 40.4, 40.4]
+[NMI] : [77.2, 77.2, 77.2, 77.2, 77.2]
+[ARI] mean : 39.3, std : 0.0
+[FMI] mean : 40.4, std : 0.0
+[NMI] mean : 77.2, std : 0.0
+
+========================================
+Use method : <ac> || deal with dataset : <ex_HIT_syn> || embedding type: <combined.embed>
+========================================
+Run 5 times experiment...
+[ARI] : [32.2, 32.2, 32.2, 32.2, 32.2]
+[FMI] : [33.2, 33.2, 33.2, 33.2, 33.2]
+[NMI] : [78.7, 78.7, 78.7, 78.7, 78.7]
+[ARI] mean : 32.2, std : 0.0
+[FMI] mean : 33.2, std : 0.0
+[NMI] mean : 78.7, std : 0.0
