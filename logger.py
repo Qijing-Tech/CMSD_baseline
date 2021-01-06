@@ -1,5 +1,5 @@
 """Contains the logging class."""
-
+from typing import Dict
 class Logger():
     """Attributes:
 
@@ -18,7 +18,7 @@ class Logger():
         self.fileptr.write(string + "\n")
         self.fileptr.flush()
 
-    def put_dict(self,input : dict):
+    def put_dict(self,input:Dict):
 
         for key,v in input.items():
             self.fileptr.write(key + '\t' + str(v) + '\n')
