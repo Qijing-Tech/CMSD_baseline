@@ -14,10 +14,13 @@ from typing import List,Tuple,Dict
 from collections import OrderedDict
 from evaluate import select_evaluate_func,metrics_adjusted_randn_index,\
     metrics_normalized_mutual_info_score,metrics_fowlkes_mallows_score
-from config import DataConfig
+from config import DataConfig, DATA_ROOT
 from utils import set_random_seed
 from logger import Logger
 from utils import split_sub_train_set_by_dev_set
+from args import parser
+args = parser.parse_args()
+cwd = Path.cwd()
 SEED = 2020
 
 
@@ -41,19 +44,24 @@ def get_word_idxes_and_cluster_idxes(raw_word_list : List[List[str]], vocab_dict
             idx += 1
 
     return flat_word_list, word_to_idxes, cluster_idxes
+
 def floatrange(start,stop,steps):
     return [start+float(i)*(stop-start)/(float(steps)-1) for i in range(steps)]
+
 def format_output(data, bit = 1):
     if isinstance(data, float):
         return round(data * 100, bit)
     elif isinstance(data, list):
        return [round(d * 100, bit)  for d in data]
 
+
 if __name__ == '__main__':
+    DataConfig['data_name'] = args.data
+    DataConfig['method_type'] = args.method
+    #DataConfig['word_emb_select'] = args.embed
     set_random_seed(seed = SEED)
-    cwd = Path.cwd()
     datadir_name = DataConfig['data_name']
-    data = cwd.joinpath(DataConfig['data_dir'], datadir_name)
+    data = DATA_ROOT.joinpath(datadir_name)
     #TODO : need modify (word_emb_select) -> choice ['combined.embed', 'Tencent_combined.embed']
     word_emb_select = DataConfig['word_emb_select']
     method_type = DataConfig['method_type']
@@ -97,7 +105,6 @@ if __name__ == '__main__':
             pred_labels = model.predict(dev_word_embeddings)
 
         elif method_type == 'dbscan':
-
             '''
             # GridSearchCV for DBSCAN factor : eps and min_sample
             sub_train_sets,sub_train_vocab = split_sub_train_set_by_dev_set(train_sets, train_vocab, dev_sets)
@@ -127,6 +134,8 @@ if __name__ == '__main__':
             '''
             model = DBScan(eps=8.22, min_sample=1)
             pred_labels = model.predict(dev_word_embeddings)
+        else:
+            raise KeyError(f'No method type <{args.method}>')
 
         target_dict = {word : dev_cluster_idxes[cluster] for word, cluster in dev_vocab.items()}
         pred_dict = {word : label for word,label in zip(dev_flat_word_list,pred_labels)}
