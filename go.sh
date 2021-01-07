@@ -1,21 +1,21 @@
-method=('kmeans' 'gmms' 'ac' )
-data=('CSKB' 'OMaha' 'exHITSyn' 'smHITSyn')
+method=('kmeans' 'gmms' 'ac' 'dbscan')
+data=('CSKB' 'OMaha' 'ex_HIT_syn' 'sm_HIT_syn')
 
 # echo $#
 if [ $# == 0 ]
 then
-    for d in ${data[@]}
+    for m in ${method[@]}   
     do
-        for m in ${method[@]}
+        for d in ${data[@]}
         do
             python run.py --data=$d --method=$m
             # echo $d+$m
         done
     done
 else
-    for d in "$@"
+    for m in ${method[@]}
     do
-        for m in ${method[@]}
+        for d in "$@"
         do
             python run.py --data=$d --method=$m
             # echo $d+$m
