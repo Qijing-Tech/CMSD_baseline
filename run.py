@@ -48,7 +48,7 @@ def get_word_idxes_and_cluster_idxes(raw_word_list : List[List[str]], vocab_dict
 def floatrange(start,stop,steps):
     return [start+float(i)*(stop-start)/(float(steps)-1) for i in range(steps)]
 
-def format_output(data, bit = 1):
+def format_output(data, bit = 2):
     if isinstance(data, float):
         return round(data * 100, bit)
     elif isinstance(data, list):
