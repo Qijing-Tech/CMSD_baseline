@@ -56,3 +56,10 @@ class GMMs:
     def predict(self, data):
         gmms = GaussianMixture(n_components=self.n_component, random_state=self.seed).fit(data)
         return gmms.predict(data)
+
+class Louvain:
+    def __init__(self, ):
+        pass
+
+    def predict(self, data):
+        pass

@@ -1,0 +1,132 @@
+
+========================================
+Use method : <dbscan> || deal with dataset : <sm_HIT_syn> || embedding type: <combined.embed>
+========================================
+Run 5 times experiment...
+[ARI] : [11.8, 11.8, 11.8, 11.8, 11.8]
+[FMI] : [19.3, 19.3, 19.3, 19.3, 19.3]
+[NMI] : [75.07, 75.07, 75.07, 75.07, 75.07]
+[ARI] mean : 11.8, std : 0.0
+[FMI] mean : 19.3, std : 0.0
+[NMI] mean : 75.07, std : 0.0
+
+========================================
+Use method : <optics> || deal with dataset : <sm_HIT_syn> || embedding type: <combined.embed>
+========================================
+Run 5 times experiment...
+[ARI] : [2.65, 2.67, 2.67, 2.67, 2.67]
+[FMI] : [11.06, 11.08, 11.08, 11.14, 11.08]
+[NMI] : [61.77, 61.82, 61.82, 61.76, 61.82]
+[ARI] mean : 2.66, std : 0.01
+[FMI] mean : 11.09, std : 0.03
+[NMI] mean : 61.8, std : 0.02
+
+========================================
+Use method : <louvain> || deal with dataset : <sm_HIT_syn> || embedding type: <combined.embed>
+========================================
+Run 5 times experiment...
+[ARI] : [0.0, 0.0, 0.0, 0.0, 0.0]
+[FMI] : [12.53, 12.53, 12.53, 12.53, 12.53]
+[NMI] : [0.0, 0.0, 0.0, 0.0, 0.0]
+[ARI] mean : 0.0, std : 0.0
+[FMI] mean : 12.53, std : 0.0
+[NMI] mean : 0.0, std : 0.0
+
+========================================
+Use method : <dbscan> || deal with dataset : <sm_HIT_syn> || embedding type: <Tencent_combined.embed>
+========================================
+Run 5 times experiment...
+[ARI] : [8.49, 8.49, 8.49, 8.49, 8.49]
+[FMI] : [10.1, 10.1, 10.1, 10.1, 10.1]
+[NMI] : [78.17, 78.17, 78.17, 78.17, 78.17]
+[ARI] mean : 8.49, std : 0.0
+[FMI] mean : 10.1, std : 0.0
+[NMI] mean : 78.17, std : 0.0
+
+========================================
+Use method : <optics> || deal with dataset : <sm_HIT_syn> || embedding type: <Tencent_combined.embed>
+========================================
+Run 5 times experiment...
+[ARI] : [1.25, 1.25, 1.25, 1.25, 1.25]
+[FMI] : [10.43, 10.43, 10.43, 10.43, 10.43]
+[NMI] : [52.64, 52.64, 52.64, 52.64, 52.64]
+[ARI] mean : 1.25, std : 0.0
+[FMI] mean : 10.43, std : 0.0
+[NMI] mean : 52.64, std : 0.0
+
+========================================
+Use method : <louvain> || deal with dataset : <sm_HIT_syn> || embedding type: <Tencent_combined.embed>
+========================================
+Run 5 times experiment...
+[ARI] : [0.0, 0.0, 0.0, 0.0, 0.0]
+[FMI] : [12.53, 12.53, 12.53, 12.53, 12.53]
+[NMI] : [0.0, 0.0, 0.0, 0.0, 0.0]
+[ARI] mean : 0.0, std : 0.0
+[FMI] mean : 12.53, std : 0.0
+[NMI] mean : 0.0, std : 0.0
+
+========================================
+Use method : <dbscan> || deal with dataset : <ex_HIT_syn> || embedding type: <combined.embed>
+========================================
+Run 5 times experiment...
+[ARI] : [2.07, 2.07, 2.07, 2.07, 2.07]
+[FMI] : [9.45, 9.45, 9.45, 9.45, 9.45]
+[NMI] : [65.55, 65.55, 65.55, 65.55, 65.55]
+[ARI] mean : 2.07, std : 0.0
+[FMI] mean : 9.45, std : 0.0
+[NMI] mean : 65.55, std : 0.0
+
+========================================
+Use method : <optics> || deal with dataset : <ex_HIT_syn> || embedding type: <combined.embed>
+========================================
+Run 5 times experiment...
+[ARI] : [0.94, 0.94, 0.94, 0.94, 0.94]
+[FMI] : [7.98, 7.98, 7.98, 7.98, 7.98]
+[NMI] : [56.73, 56.73, 56.73, 56.73, 56.73]
+[ARI] mean : 0.94, std : 0.0
+[FMI] mean : 7.98, std : 0.0
+[NMI] mean : 56.73, std : 0.0
+
+========================================
+Use method : <louvain> || deal with dataset : <ex_HIT_syn> || embedding type: <combined.embed>
+========================================
+Run 5 times experiment...
+[ARI] : [0.0, 0.0, 0.0, 0.0, 0.0]
+[FMI] : [9.25, 9.25, 9.25, 9.25, 9.25]
+[NMI] : [0.0, 0.0, 0.0, 0.0, 0.0]
+[ARI] mean : 0.0, std : 0.0
+[FMI] mean : 9.25, std : 0.0
+[NMI] mean : 0.0, std : 0.0
+
+========================================
+Use method : <dbscan> || deal with dataset : <ex_HIT_syn> || embedding type: <Tencent_combined.embed>
+========================================
+Run 5 times experiment...
+[ARI] : [4.07, 4.07, 4.07, 4.07, 4.07]
+[FMI] : [5.02, 5.02, 5.02, 5.02, 5.02]
+[NMI] : [79.64, 79.64, 79.64, 79.64, 79.64]
+[ARI] mean : 4.07, std : 0.0
+[FMI] mean : 5.02, std : 0.0
+[NMI] mean : 79.64, std : 0.0
+
+========================================
+Use method : <optics> || deal with dataset : <ex_HIT_syn> || embedding type: <Tencent_combined.embed>
+========================================
+Run 5 times experiment...
+[ARI] : [0.51, 0.51, 0.51, 0.51, 0.51]
+[FMI] : [7.8, 7.8, 7.8, 7.8, 7.8]
+[NMI] : [48.18, 48.18, 48.18, 48.18, 48.18]
+[ARI] mean : 0.51, std : 0.0
+[FMI] mean : 7.8, std : 0.0
+[NMI] mean : 48.18, std : 0.0
+
+========================================
+Use method : <louvain> || deal with dataset : <ex_HIT_syn> || embedding type: <Tencent_combined.embed>
+========================================
+Run 5 times experiment...
+[ARI] : [0.0, 0.0, 0.0, 0.0, 0.0]
+[FMI] : [9.25, 9.25, 9.25, 9.25, 9.25]
+[NMI] : [0.0, 0.0, 0.0, 0.0, 0.0]
+[ARI] mean : 0.0, std : 0.0
+[FMI] mean : 9.25, std : 0.0
+[NMI] mean : 0.0, std : 0.0

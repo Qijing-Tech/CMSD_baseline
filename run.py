@@ -6,44 +6,26 @@
 @IDE 　：　PyCharm
 """
 from pathlib import Path
-from dataloader import DataSet,DataSetDir
+from dataloader import DataSetDir
 from method import Kmeans,GMMs,DBScan,AC,Optics
+from sklearn.cluster import OPTICS,DBSCAN
 import numpy as np
-import random
-from typing import List,Tuple,Dict
-from collections import OrderedDict
 from evaluate import select_evaluate_func,metrics_adjusted_randn_index,\
     metrics_normalized_mutual_info_score,metrics_fowlkes_mallows_score
-from config import DataConfig
+from config import DataConfig,DATA_ROOT
 from utils import set_random_seed
 from logger import Logger
-from utils import split_sub_train_set_by_dev_set
+from utils import split_sub_train_set_by_dev_set, get_word_idxes_and_cluster_idxes, \
+    grid_search_model_params, construct_graph_by_words
+from args import parser
+args = parser.parse_args()
+cwd = Path.cwd()
 SEED = 2020
 
-
-def get_word_idxes_and_cluster_idxes(raw_word_list : List[List[str]], vocab_dict : Dict,
-                                     word2id : Dict,  is_shuffle = True) -> Tuple[List, List, Dict]:
-    flat_word_list = []
-    for word_list in raw_word_list:
-        flat_word_list.extend(word_list)
-    if is_shuffle:
-        random.shuffle(flat_word_list)
-
-    word_to_idxes = []
-    for word in flat_word_list:
-        word_to_idxes.append(word2id[word])
-
-    cluster_idxes = OrderedDict()
-    idx = 0
-    for word, cluster in vocab_dict.items():
-        if cluster not in cluster_idxes:
-            cluster_idxes[cluster] = idx
-            idx += 1
-
-    return flat_word_list, word_to_idxes, cluster_idxes
 def floatrange(start,stop,steps):
     return [start+float(i)*(stop-start)/(float(steps)-1) for i in range(steps)]
-def format_output(data, bit = 1):
+def format_output(data, bit = 2):
+
     if isinstance(data, float):
         return round(data * 100, bit)
     elif isinstance(data, list):
@@ -51,9 +33,11 @@ def format_output(data, bit = 1):
 
 if __name__ == '__main__':
 
-    cwd = Path.cwd()
+    DataConfig['data_name'] = args.data
+    DataConfig['method_type'] = args.method
+    DataConfig['word_emb_select'] = args.embed
     datadir_name = DataConfig['data_name']
-    data = cwd.joinpath(DataConfig['data_dir'], datadir_name)
+    data = DATA_ROOT.joinpath(datadir_name)
     #TODO : need modify (word_emb_select) -> choice ['combined.embed', 'Tencent_combined.embed']
     word_emb_select = DataConfig['word_emb_select']
     method_type = DataConfig['method_type']
@@ -72,7 +56,6 @@ if __name__ == '__main__':
     # train_flat_word_list, train_word_idxes, train_cluster_idxes = get_word_idxes_and_cluster_idxes(train_sets, train_vocab, word2id)
     # train_word_embeddings = embedding[np.array(train_word_idxes)]
 
-    #TODO : need modify (run_times)
     run_times = DataConfig['run_times']
     seed_list = DataConfig['seed_list']
     ari_list, nmi_list, fmi_list = [], [], []
@@ -87,7 +70,6 @@ if __name__ == '__main__':
             k_cluster = len(dev_cluster_idxes.keys())
             model = Kmeans(n_cluster=k_cluster, seed=seed_list[i])
             pred_labels = model.predict(dev_word_embeddings)
-
         elif method_type == 'gmms':
             k_component = len(dev_cluster_idxes.keys())
             model = GMMs(n_component=k_component, seed=seed_list[i])
@@ -97,67 +79,43 @@ if __name__ == '__main__':
             model = AC(n_cluster=k_cluster)
             pred_labels = model.predict(dev_word_embeddings)
         elif method_type == 'optics':
-            '''
-            # GridSearchCV for DBSCAN factor : eps and min_sample
-            sub_train_sets,sub_train_vocab = split_sub_train_set_by_dev_set(train_sets, train_vocab, dev_sets)
-            sub_train_flat_word_list, sub_train_word_idxes, sub_train_cluster_idxes = get_word_idxes_and_cluster_idxes(sub_train_sets,
-                                                                                                                        sub_train_vocab,
-                                                                                                                        word2id)
-            sub_train_word_embeddings = embedding[np.array(sub_train_word_idxes)]
+            if i == 0:
+                sub_train_sets, sub_train_vocab = split_sub_train_set_by_dev_set(train_sets, train_vocab, dev_sets)
+                min_samples_list = list(range(1, 10))
+                learn_params = dict(min_samples=min_samples_list)
+                model = OPTICS()
+                best_params = grid_search_model_params(sub_train_sets, sub_train_vocab, word2id,
+                                                       embedding,model,learn_params,score_index='ARI')
+                best_min_sample = best_params['min_samples']
+                del sub_train_sets, sub_train_vocab
 
-            sub_train_labels = np.array([sub_train_cluster_idxes[ sub_train_vocab[word] ]for word in sub_train_flat_word_list])
-
-            from sklearn.cluster import OPTICS
-            from sklearn import metrics
-            model = OPTICS()
-            from sklearn.model_selection import StratifiedKFold, GridSearchCV
-            min_samples_list = list(range(1,10))
-            param_grid = dict(min_samples = min_samples_list)
-            kflod = StratifiedKFold(n_splits = 3, shuffle=True, random_state=SEED)
-            def my_custom_scoring(estimator,X,y):
-                y_pred = estimator.fit_predict(X)
-                return  metrics.adjusted_rand_score(labels_true = y, labels_pred = y_pred)
-                # return metrics.fowlkes_mallows_score(labels_true= y, labels_pred= y_pred)
-                # return metrics.normalized_mutual_info_score(labels_true= y, labels_pred= y_pred)
-
-            grid_search = GridSearchCV(model, param_grid, scoring=my_custom_scoring, n_jobs=4,cv=kflod)
-            grid_result = grid_search.fit(sub_train_word_embeddings,sub_train_labels)
-            print(f'Best ARI : {grid_result.best_score_}, using param : {grid_result.best_params_}')
-            '''
-            model = Optics(min_sample = 2)
+            model = Optics(min_sample = best_min_sample)
             pred_labels = model.predict(dev_word_embeddings)
+
         elif method_type == 'dbscan':
 
-            '''
-            # GridSearchCV for DBSCAN factor : eps and min_sample
-            sub_train_sets,sub_train_vocab = split_sub_train_set_by_dev_set(train_sets, train_vocab, dev_sets)
-            sub_train_flat_word_list, sub_train_word_idxes, sub_train_cluster_idxes = get_word_idxes_and_cluster_idxes(sub_train_sets,
-                                                                                                                        sub_train_vocab,
-                                                                                                                        word2id)
-            sub_train_word_embeddings = embedding[np.array(sub_train_word_idxes)]
+            if i == 0:
+                sub_train_sets, sub_train_vocab = split_sub_train_set_by_dev_set(train_sets, train_vocab, dev_sets)
+                eps_list = list(floatrange(0.1, 10, 10))
+                min_samples_list = list(range(1, 10, 10))
+                learn_params = dict(eps = eps_list, min_samples = min_samples_list)
+                model = DBSCAN()
+                best_params = grid_search_model_params(sub_train_sets, sub_train_vocab, word2id,
+                                                       embedding,model,learn_params,score_index='ARI')
+                best_min_sample = best_params['min_samples']
+                best_eps = best_params['eps']
+                del sub_train_sets, sub_train_vocab
 
-            sub_train_labels = np.array([sub_train_cluster_idxes[ sub_train_vocab[word] ]for word in sub_train_flat_word_list])
-
-            from sklearn.cluster import DBSCAN
-            from sklearn import metrics
-            model = DBSCAN()
-            from sklearn.model_selection import StratifiedKFold, GridSearchCV
-            from sklearn.metrics import make_scorer,adjusted_rand_score
-            eps_list = list(floatrange(0.1,10,10))
-            min_samples_list = list(range(1,10,10))
-            param_grid = dict(eps = eps_list, min_samples = min_samples_list)
-            kflod = StratifiedKFold(n_splits = 3, shuffle=True, random_state=SEED)
-            def my_custom_scoring(estimator, X, y):
-                y_pred = estimator.fit_predict(X)
-                return metrics.adjusted_rand_score(labels_true=y, labels_pred=y_pred)
-                # return metrics.fowlkes_mallows_score(labels_true= y, labels_pred= y_pred)
-                # return metrics.normalized_mutual_info_score(labels_true= y, labels_pred= y_pred)
-            grid_search = GridSearchCV(model, param_grid, scoring=my_custom_scoring, n_jobs=4,cv=kflod)
-            grid_result = grid_search.fit(sub_train_word_embeddings,sub_train_labels)
-            print(f'Best ARI : {grid_result.best_score_}, using param : {grid_result.best_params_}')
-            '''
-            model = DBScan(eps=2.3, min_sample = 1)
+            model = DBScan(eps = best_eps, min_sample = best_min_sample)
             pred_labels = model.predict(dev_word_embeddings)
+
+        elif method_type == 'louvain':
+            import community
+            graph = construct_graph_by_words(dev_flat_word_list, dev_word_embeddings)
+            map_idx = {i: word for i,word in enumerate(dev_flat_word_list)}
+            partition = community.best_partition(graph)
+
+            pred_labels = [partition[word] for idx, word in map_idx.items()]
 
         target_dict = {word : dev_cluster_idxes[cluster] for word, cluster in dev_vocab.items()}
         pred_dict = {word : label for word,label in zip(dev_flat_word_list,pred_labels)}
@@ -178,9 +136,10 @@ if __name__ == '__main__':
     log_str += f'\n[ARI] : {str(format_output(ari_list))}\n' \
                f'[FMI] : {str(format_output(fmi_list))}\n' \
                f'[NMI] : {str(format_output(nmi_list))}'
-    log_str += f'\n[ARI] mean : {format_output(ari_avg)}, std : {format_output(ari_std, 2)}\n' \
-               f'[FMI] mean : {format_output(fmi_avg)}, std : {format_output(fmi_std, 2)}\n' \
-               f'[NMI] mean : {format_output(nmi_avg)}, std : {format_output(nmi_std, 2)}'
+    log_str += f'\n[ARI] mean : {format_output(ari_avg)}, std : {format_output(ari_std)}\n' \
+               f'[FMI] mean : {format_output(fmi_avg)}, std : {format_output(fmi_std)}\n' \
+               f'[NMI] mean : {format_output(nmi_avg)}, std : {format_output(nmi_std)}'
+
     log = Logger(DataConfig['log_file'], 'a')
     log.put(log_str)
     print(log_str)
