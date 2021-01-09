@@ -58,7 +58,8 @@ def split_sub_train_set_by_dev_set(train_sets : List[List[str]], train_vocab : D
     sub_train_vocab = {}
     for word_len, len_cnt in len_cnt_dict.items():
         if word_len in reconstruct_train_sets:
-            select_list = random.sample(reconstruct_train_sets[word_len], len_cnt)
+            sample_cnt = len_cnt if len_cnt < len(reconstruct_train_sets[word_len]) else len(reconstruct_train_sets[word_len])
+            select_list = random.sample(reconstruct_train_sets[word_len], sample_cnt)
             sub_train_word_lists.extend(select_list)
             sub_train_vocab.update({word : train_vocab[word] for word_list in select_list for word in word_list})
         else: #have no len -> select from leave_word_len
