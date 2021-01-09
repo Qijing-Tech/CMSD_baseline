@@ -78,6 +78,7 @@ if __name__ == '__main__':
             k_cluster = len(dev_cluster_idxes.keys())
             model = AC(n_cluster=k_cluster)
             pred_labels = model.predict(dev_word_embeddings)
+        
         elif method_type == 'optics':
             if i == 0:
                 sub_train_sets, sub_train_vocab = split_sub_train_set_by_dev_set(train_sets, train_vocab, dev_sets)
@@ -116,7 +117,8 @@ if __name__ == '__main__':
             partition = community.best_partition(graph)
 
             pred_labels = [partition[word] for idx, word in map_idx.items()]
-
+        else:
+            raise KeyError('Method Key Error')
         target_dict = {word : dev_cluster_idxes[cluster] for word, cluster in dev_vocab.items()}
         pred_dict = {word : label for word,label in zip(dev_flat_word_list,pred_labels)}
         # result_list = select_evaluate_func(['ARI','NMI','FMI'])
