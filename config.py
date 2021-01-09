@@ -16,8 +16,9 @@ from pathlib import Path
 cwd = Path.cwd()
 
 # ------------- path config ------------- #
-DATA_ROOT = cwd.joinpath('../data')
+# DATA_ROOT = cwd.joinpath('../data')
 
+DATA_ROOT = cwd.joinpath('data')
 # ------------- data config ------------- #
 DataConfig = {
     'data_name' : 'sm_HIT_syn',
