@@ -6,7 +6,7 @@
 @IDE 　：　PyCharm
 """
 import numpy as np
-from sklearn.cluster import KMeans,DBSCAN,AgglomerativeClustering
+from sklearn.cluster import KMeans,DBSCAN,AgglomerativeClustering,OPTICS
 from sklearn.mixture import GaussianMixture
 '''
     wrapper from sklearn
@@ -40,6 +40,14 @@ class DBScan:
         dbscan = DBSCAN(eps=self.eps, min_samples=self.min_sample).fit(data)
         return dbscan.labels_
 
+class Optics:
+    def __init__(self, min_sample):
+        self.min_sample = min_sample
+
+    def predict(self, data):
+        optics = OPTICS(min_samples=self.min_sample).fit(data)
+        return optics.labels_
+
 class GMMs:
     def __init__(self, n_component, seed = 1234):
         self.n_component = n_component
@@ -48,3 +56,10 @@ class GMMs:
     def predict(self, data):
         gmms = GaussianMixture(n_components=self.n_component, random_state=self.seed).fit(data)
         return gmms.predict(data)
+
+class Louvain:
+    def __init__(self, ):
+        pass
+
+    def predict(self, data):
+        pass
