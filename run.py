@@ -7,7 +7,7 @@
 """
 from pathlib import Path
 from dataloader import DataSetDir
-from method import Kmeans,GMMs,DBScan,AC,Optics
+from method import Kmeans,GMMs,DBScan,AC,Optics, Louvain
 from sklearn.cluster import OPTICS,DBSCAN
 import numpy as np
 from evaluate import select_evaluate_func,metrics_adjusted_randn_index,\
@@ -16,7 +16,7 @@ from config import DataConfig,DATA_ROOT
 from utils import set_random_seed
 from logger import Logger
 from utils import split_sub_train_set_by_dev_set, get_word_idxes_and_cluster_idxes, \
-    grid_search_model_params, construct_graph_by_words
+    grid_search_model_params
 from args import parser
 args = parser.parse_args()
 cwd = Path.cwd()
@@ -81,7 +81,7 @@ if __name__ == '__main__':
         
         elif method_type == 'optics':
             if i == 0:
-                sub_train_sets, sub_train_vocab = split_sub_train_set_by_dev_set(train_sets, train_vocab, dev_sets)
+                sub_train_sets, sub_train_vocab, _,_ = split_sub_train_set_by_dev_set(train_sets, train_vocab, dev_sets)
                 min_samples_list = list(range(1, 10))
                 learn_params = dict(min_samples=min_samples_list)
                 model = OPTICS()
@@ -96,7 +96,7 @@ if __name__ == '__main__':
         elif method_type == 'dbscan':
 
             if i == 0:
-                sub_train_sets, sub_train_vocab = split_sub_train_set_by_dev_set(train_sets, train_vocab, dev_sets)
+                sub_train_sets, sub_train_vocab, _, _ = split_sub_train_set_by_dev_set(train_sets, train_vocab, dev_sets)
                 eps_list = list(floatrange(0.1, 10, 10))
                 min_samples_list = list(range(1, 10, 10))
                 learn_params = dict(eps = eps_list, min_samples = min_samples_list)
@@ -111,12 +111,10 @@ if __name__ == '__main__':
             pred_labels = model.predict(dev_word_embeddings)
 
         elif method_type == 'louvain':
-            import community
-            graph = construct_graph_by_words(dev_flat_word_list, dev_word_embeddings)
-            map_idx = {i: word for i,word in enumerate(dev_flat_word_list)}
-            partition = community.best_partition(graph)
 
-            pred_labels = [partition[word] for idx, word in map_idx.items()]
+            model = Louvain(dev_flat_word_list, measure='dot')
+            pred_labels = model.predict(dev_word_embeddings)
+
         else:
             raise KeyError('Method Key Error')
         target_dict = {word : dev_cluster_idxes[cluster] for word, cluster in dev_vocab.items()}
