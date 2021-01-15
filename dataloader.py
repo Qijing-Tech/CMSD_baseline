@@ -15,6 +15,8 @@ import numpy as np
 import pickle
 import config
 from collections import OrderedDict
+from torch.utils.data import Dataset
+from utils import get_word_idxes_and_cluster_idxes
 pattern = "(?<=\')[^\|\']*\|\|[^\|\']*?(?=\')"
 
 
@@ -76,7 +78,7 @@ class DataSetDir(object):
             nums = [ eval(i) for i in t[1:]]
             embed_matrix.append(nums)
         
-        embed_np_matrix = np.array(embed_matrix)
+        embed_np_matrix = np.array(embed_matrix,dtype=np.float32)
         return word2id, embed_np_matrix 
     
 class DataSet(object):
@@ -325,7 +327,26 @@ class Dataloader(object):
                 Dataloader(dataitem[:sub_l], self.word2id, self.batch_size),
                 Dataloader(dataitem[sub_l:], self.word2id, self.batch_size)
             ]
-        
+
+
+
+class EmbeddingDataSet(Dataset):
+
+    def __init__(self, word_list, vocab_dict, word2id, embedding):
+        flat_word_list, word_idxes, cluster_idxes = get_word_idxes_and_cluster_idxes(word_list, vocab_dict, word2id)
+        self.word_labels = [cluster_idxes[ vocab_dict[word] ] for word in flat_word_list]
+        self.word_embeddings = embedding[np.array(word_idxes)]
+        self.num_class = len(cluster_idxes.keys())
+        assert self.word_embeddings.shape[0] == len(self.word_labels)
+
+    def __getitem__(self, idx):
+
+        return self.word_embeddings[idx], self.word_labels[idx]
+
+    def __len__(self):
+        return len(self.word_labels)
+
+
     
 
 
