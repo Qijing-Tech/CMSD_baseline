@@ -64,7 +64,7 @@ if __name__ == '__main__':
         set_random_seed(seed=seed_list[i])
         dev_flat_word_list, dev_word_idxes, dev_cluster_idxes = get_word_idxes_and_cluster_idxes(dev_sets, dev_vocab,word2id)
         dev_word_embeddings = embedding[np.array(dev_word_idxes)]
-
+        
         if method_type == 'kmeans':
             # set cluster number by prior
             k_cluster = len(dev_cluster_idxes.keys())
@@ -111,8 +111,31 @@ if __name__ == '__main__':
             pred_labels = model.predict(dev_word_embeddings)
 
         elif method_type == 'louvain':
+            if i == 0:
+                sub_train_sets, sub_train_vocab, _, _ = split_sub_train_set_by_dev_set(train_sets, train_vocab,dev_sets)
+                thresold_list = list(floatrange(-1, 1, 10))
+                param_dict = {}
+                best_thresold = 0
+                best_score = 0.
+                for thresold in thresold_list:
 
-            model = Louvain(dev_flat_word_list, measure='dot')
+                    sub_train_flat_word_list, sub_train_word_idxes, sub_train_cluster_idxes = get_word_idxes_and_cluster_idxes(sub_train_sets,sub_train_vocab,word2id)
+                    sub_train_word_embeddings = embedding[np.array(sub_train_word_idxes)]
+                    sub_train_labels = np.array([sub_train_cluster_idxes[sub_train_vocab[word]] for word in sub_train_flat_word_list])
+                    model = Louvain(sub_train_flat_word_list, measure='cosine', thresold= thresold)
+                    pred_labels = model.predict(sub_train_word_embeddings)
+                    target_dict = {word: sub_train_cluster_idxes[cluster] for word, cluster in sub_train_vocab.items()}
+                    pred_dict = {word: label for word, label in zip(sub_train_flat_word_list, pred_labels)}
+                    _, ARI = metrics_adjusted_randn_index(pred_dict, target_dict)
+                    _, NMI = metrics_normalized_mutual_info_score(pred_dict, target_dict)
+                    _, FMI = metrics_fowlkes_mallows_score(pred_dict, target_dict)
+                    score = (ARI + NMI + FMI) / 3
+                    # print('calcuate thresold : {:.3f}, ARI : {:.3f}, NMI : {:.3f}, FMI : {:.3f}'.format(thresold, ARI, NMI, FMI))
+                    if score > best_score:
+                        best_score = score
+                        best_thresold = thresold
+                print('Use best thresold : {:.3f}'.format(best_thresold))
+            model = Louvain(dev_flat_word_list, measure='cosine', thresold=best_thresold)
             pred_labels = model.predict(dev_word_embeddings)
 
         else:
