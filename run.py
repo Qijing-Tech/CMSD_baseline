@@ -85,7 +85,7 @@ if __name__ == '__main__':
                 min_samples_list = list(range(1, 10))
                 learn_params = dict(min_samples=min_samples_list)
                 model = OPTICS()
-                best_params = grid_search_model_params(sub_train_sets, sub_train_vocab, word2id,
+                best_params = grid_search_model_params(dev_sets, dev_vocab, word2id,
                                                        embedding,model,learn_params,score_index='ARI')
                 best_min_sample = best_params['min_samples']
                 del sub_train_sets, sub_train_vocab
@@ -101,7 +101,7 @@ if __name__ == '__main__':
                 min_samples_list = list(range(1, 10, 10))
                 learn_params = dict(eps = eps_list, min_samples = min_samples_list)
                 model = DBSCAN()
-                best_params = grid_search_model_params(sub_train_sets, sub_train_vocab, word2id,
+                best_params = grid_search_model_params(dev_sets, dev_vocab, word2id,
                                                        embedding,model,learn_params,score_index='ARI')
                 best_min_sample = best_params['min_samples']
                 best_eps = best_params['eps']
@@ -120,6 +120,7 @@ if __name__ == '__main__':
         target_dict = {word : dev_cluster_idxes[cluster] for word, cluster in dev_vocab.items()}
         pred_dict = {word : label for word,label in zip(dev_flat_word_list,pred_labels)}
         # result_list = select_evaluate_func(['ARI','NMI','FMI'])
+        # import pdb;pdb.set_trace()
         _, ARI = metrics_adjusted_randn_index(pred_dict, target_dict)
         _, NMI = metrics_normalized_mutual_info_score(pred_dict,target_dict)
         _, FMI = metrics_fowlkes_mallows_score(pred_dict, target_dict)
