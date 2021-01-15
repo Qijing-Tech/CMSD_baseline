@@ -88,6 +88,7 @@ class Confusion(object):
             pred = output
         indices = (target * self.conf.stride(0) + pred.squeeze_().type_as(target)).type_as(self.conf)
         ones = torch.ones(1).type_as(self.conf).expand(indices.size(0))
+
         self._conf_flat = self.conf.view(-1)
         self._conf_flat.index_add_(0, indices, ones)
 

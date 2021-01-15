@@ -26,25 +26,22 @@ def get_data_loader(args, datadir):
     dev_vocab = datadir.dev_dataset.vocab
     dev_sets = datadir.dev_dataset.raw_sets
 
-    train_loader, dev_loader, test_loader = None,None,None
-    train_dataset, dev_dataset, test_dataset = None,None,None
-    if args.is_train:
-        train_vocab = datadir.train_dataset.vocab
-        train_sets = datadir.train_dataset.raw_sets
+    train_vocab = datadir.train_dataset.vocab
+    train_sets = datadir.train_dataset.raw_sets
 
-        #split dev dataset
-        dev_sets, dev_vocab, train_sets, train_vocab = split_sub_train_set_by_dev_set(train_sets, train_vocab, train_sets, sample_ratio=0.3)
+    #split dev dataset
+    sub_dev_sets, sub_dev_vocab, train_sets, train_vocab = split_sub_train_set_by_dev_set(train_sets, train_vocab, train_sets, sample_ratio=0.3)
 
 
-        # For train SPN
-        train_dataset = EmbeddingDataSet(train_sets, train_vocab, word2id, embedding)
-        train_loader = DataLoader(train_dataset, batch_size=args.batch_size, num_workers=args.workers, shuffle=True)
+    # For train SPN
+    train_dataset = EmbeddingDataSet(train_sets, train_vocab, word2id, embedding)
+    train_loader = DataLoader(train_dataset, batch_size=args.batch_size, num_workers=args.workers, shuffle=True)
 
-        dev_dataset = EmbeddingDataSet(dev_sets, dev_vocab, word2id, embedding)
-        dev_loader = DataLoader(dev_dataset, batch_size=args.batch_size, num_workers=args.workers, shuffle=False)
+    dev_dataset = EmbeddingDataSet(sub_dev_sets, sub_dev_vocab, word2id, embedding)
+    dev_loader = DataLoader(dev_dataset, batch_size=args.batch_size, num_workers=args.workers, shuffle=False)
 
     test_dataset = EmbeddingDataSet(dev_sets, dev_vocab, word2id, embedding)
-    test_loader = DataLoader(test_dataset, batch_size=args.batch_size, num_workers=args.workers, shuffle=False)
+    test_loader = DataLoader(test_dataset, batch_size=args.batch_size, num_workers=args.workers,shuffle=False)
 
     return in_dim, train_loader, dev_loader, test_loader, train_dataset, dev_dataset, test_dataset
 
@@ -68,6 +65,7 @@ def run_model(args):
     in_dim, train_loader, eval_loader, test_loader ,train_dataset, eval_dataset, test_dataset = get_data_loader(args,  datadir)
     #MODEL
     origin_loss_type = args.loss_type
+    origin_out_dim = args.out_dim
     if args.is_train:
         args.out_dim = 2
         args.loss_type = 'DPS'
@@ -77,14 +75,16 @@ def run_model(args):
         model = L2C(args, in_dim = in_dim, out_dim = args.out_dim)
         model.train(args, train_loader, eval_loader,tgt_class )
 
-    if args.out_dim < 0:  # Use ground-truth number of classes/clusters
-        args.out_dim = test_dataset.num_class
+
+    if origin_out_dim < 0:  # Use ground-truth number of classes/clusters
+        args.out_dim = train_dataset.num_class
 
     args.loss_type = origin_loss_type
     args.use_SPN = True
+    args.skip_eval = True
     model = L2C(args, in_dim=in_dim, out_dim=args.out_dim, SPN_model=model_path)
     args.prin_freq = 0
-
+    model.train(args, train_loader, eval_loader, train_dataset.num_class)
     cluster_info = model.predict(test_loader, args, test_dataset.num_class)
     log_str = '\n' + '=' * 40 + f'\nUse method : <{method_type}> || deal with dataset : <{datadir_name}> || embedding type: <{word_emb_select}>\n' + '=' * 40
     log_str += f"\n[ARI] : {format_output(cluster_info['ARI'])}\n" \

@@ -75,26 +75,27 @@ class GMMs:
         return gmms.predict(data)
 
 class Louvain:
-    def __init__(self, word_list, measure = 'euclidean'):
+    def __init__(self, word_list, measure = 'cosine', thresold=0.):
         self.word_list = word_list
         self.map_idx = {i: word for i, word in enumerate(word_list)}
         self.measure = measure
+        self.thresold=  thresold
 
     def predict(self, data):
 
-        graph = self._construct_graph_by_words(self.word_list, data, self.measure)
+        graph = self._construct_graph_by_words(self.word_list, data, self.measure, self.thresold)
         partition = community.best_partition(graph)
-        pred_labels = [partition[word] for idx, word in self.map_idx.items()]
+        pred_labels = [partition[word] if word in partition.keys() else -1 for idx, word in self.map_idx.items()]
         return pred_labels
 
-    def _construct_graph_by_words(self,word_lists : List, word_embeddings : np.ndarray, measure='euclidean'):
+    def _construct_graph_by_words(self,word_lists : List, word_embeddings : np.ndarray, measure='cosine', thresold=0.):
 
         #有个问题 ： weight 用什么衡量最好 ？
-        def get_distance(v1, v2, measure='euclidean'):
+        def get_distance(v1, v2, measure='cosine'):
             if measure == 'euclidean':
                 return np.linalg.norm(v1 - v2)
             elif measure == 'cosine':
-                return np.dot(v1, v2) / np.linalg.norm(v1) * np.linalg.norm(v2)
+                return np.dot(v1, v2) / (np.linalg.norm(v1) * np.linalg.norm(v2))
             elif measure == 'dot':
                 return np.dot(v1, v2)
             else:
@@ -104,12 +105,11 @@ class Louvain:
         for i, word_prev in enumerate(word_lists):
             for j, word_after in enumerate(word_lists):
                 if i < j:
-                    p = random.random()
-                    if p >= 0.:
-                        g.add_edge(word_prev, word_after,
-                                   weight= get_distance(word_embeddings[i], word_embeddings[j], measure = measure),
-                                   capacity=15,
-                                   )
+                    weight = get_distance(word_embeddings[i], word_embeddings[j], measure = measure)
+
+                    if weight >= thresold:
+                        g.add_edge(word_prev, word_after, weight= weight)
+
 
         return g
 
@@ -167,8 +167,8 @@ class L2C:
             if eval_loader is not None and ((not args.skip_eval) or (epoch == args.epochs - 1)):
                 KPI, _ = self.evaluate(eval_loader, self.model, args)
             # Save checkpoint at each LR steps and the end of optimization
-            if epoch + 1 in args.schedule + [args.epochs]:
-                self.learner.snapshot(os.path.join(args.model_save_path, "%s#%s#%s#DPS" % (args.data, args.embed, args.model_name)), KPI)
+            if (epoch + 1 in args.schedule + [args.epochs]) and not args.skip_eval:
+                self.learner.snapshot(os.path.join(args.model_save_path, "%s#%s#%s#%s" % (args.data, args.embed, args.model_name, args.loss_type)), KPI)
         return KPI
 
     def evaluate(self, eval_loader, model, args, tgt_class = None):
@@ -192,12 +192,14 @@ class L2C:
 
             # Update the performance meter
             output = output.detach()
+
             confusion.add(output, eval_target)
 
         # Loss-specific information
         KPI = 0
         cluster_index = None
         if args.loss_type in ['KCL', 'MCL']:
+
             confusion.optimal_assignment(tgt_class, args.cluster2Class)
             if args.out_dim <= 20:
                 confusion.show()
@@ -229,6 +231,7 @@ class L2C:
             train_target = eval_target = Class2Simi(target, mode='cls')
         else:
             assert False,'Unsupported loss:'+args.loss_type
+
         return train_target.detach(), eval_target.detach()  # Make sure no gradients
 
     def _train_epoch(self, epoch, train_loader, learner, args, tgt_class):
