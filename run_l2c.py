@@ -43,7 +43,7 @@ def get_data_loader(args, datadir):
     test_dataset = EmbeddingDataSet(dev_sets, dev_vocab, word2id, embedding)
     test_loader = DataLoader(test_dataset, batch_size=args.batch_size, num_workers=args.workers,shuffle=False)
 
-    return in_dim, train_loader, dev_loader, test_loader, train_dataset, dev_dataset, test_dataset
+    return in_dim, train_loader, test_loader, test_loader, train_dataset, test_dataset, test_dataset
 
 
 def run_model(args):
